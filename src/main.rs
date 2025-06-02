@@ -344,6 +344,193 @@ fn while_loop() {
     }
 }
 
+#[test]
+fn array_iteration_using_while(){
+    let array: [&str; 5] = ["A", "B", "C", "D", "E" ]; 
+    let mut index = 0; 
+    while index < array.len() {
+        println!("array[{index}] = {}", array[index]);
+        index += 1; 
+    } 
+}
+
+#[test]
+fn array_iteration_using_for_loop(){
+    let array: [&str; 5] = ["A", "B", "C", "D", "E" ]; 
+
+    for value in array {
+        println!("{}", value);
+    }
+}
+
+
+
+#[test]
+fn range(){
+    let array: [&str; 5] = ["A", "B", "C", "D", "E" ]; 
+    let range = 0..array.len(); 
+    println!("Range Start: {}", range.start); 
+    println!("Range End: {}", range.end); 
+
+    for i in range{
+        println!("value: {}", i); 
+    }
+}
+
+#[test]
+fn range_inclisive() {
+    let array: [&str; 5] = ["A", "B", "C", "D", "E" ];    
+    let range = 0..=4; // this same as 0..5  which is exclusive
+
+    println!("range start: {}", range.start()); 
+    println!("range end: {}", range.end()); 
+
+
+    for i in range {
+        println!("value: {}", array[i]); 
+    }
+}
+
+#[allow(dead_code)]
+fn say_hello(){
+    println!("hello!!!");
+}
+
+#[test]
+fn test_say_hello(){
+    say_hello(); 
+    say_hello(); 
+    say_hello(); 
+}
+
+
+#[allow(dead_code)]
+fn say_goodbye(first_name: &str, last_name: &str){
+    println!("good bye {} {} !", first_name, last_name); 
+}
+
+#[test]
+fn test_say_goodbye() {
+    say_goodbye("Muhammad", "Ridha"); 
+    say_goodbye("Muhammad", "Ridha"); 
+    say_goodbye("Muhammad", "Ridha"); 
+}
+
+
+#[allow(dead_code)]
+fn factorial_loop(n: i32)-> i32 {
+    if n < 0 {
+        return 1; 
+    }
+    let mut value = 1; 
+    for i in 1..=n {
+        value *= i;  
+    }
+    value  
+}
+
+
+#[test]
+fn test_factoriar_loop() {
+    let n = factorial_loop(5); 
+    println!("n = {}", n); 
+
+
+    let m = factorial_loop(-10); 
+    println!("n = {}", m); 
+    
+}
+
+
+#[allow(dead_code)]
+fn print_using_recursive(message: String, times: u32) {
+    if times < 1 {
+        return;
+    } else {
+        println!("{}", message);
+    }
+
+    print_using_recursive(message, times - 1); 
+}
+
+
+
+#[test]
+fn test_print_using_recursive() {
+    print_using_recursive(String::from("hello"), 10 ); 
+}
+
+#[allow(dead_code)]
+fn factorial_recursive(n: i32)-> i32 {
+    if n < 1 {
+        return 1; 
+    }
+    n * factorial_recursive(n - 1) 
+} 
+
+
+#[test]
+fn test_factorial_recursive() {
+    let recursive_result: i32 = factorial_recursive(5); 
+    println!("recursive result = {}", recursive_result); 
+
+
+    let negative: i32 = factorial_recursive(0); 
+    println!("negative recursive = {}", negative); 
+}
+
+
+#[allow(dead_code)]
+fn print_number(number: i32) {
+    println!("print_number => {}", number); 
+}
+
+#[allow(dead_code)]
+fn hi(name: String) {
+    println!("Hi {} !", name); 
+}
+
+#[test]
+fn test_function() {
+
+    let initial_number = 10; 
+    print_number(initial_number); 
+    println!("initial number: {}", initial_number); 
+
+
+    let initial_name = String::from("Muhammad Ridha"); 
+    hi(initial_name); 
+    // println!("initial_name = {}", initial_name); 
+} 
+
+#[allow(dead_code)]
+fn full_name(first_name: String, last_name: String)-> (String, String, String) {
+    let fullname = format!("{} {}", first_name, last_name); 
+    (first_name, last_name, fullname)
+}
+
+#[test]
+fn test_fullname() {
+    let initial_first_name: String = String::from("Muhammad"); 
+    let initial_last_name: String = String::from("Ridha"); 
+
+    let (a, b, fullname) = full_name(initial_first_name, initial_last_name); 
+    println!("{}", a);
+    println!("{}", b);
+    println!("{}", fullname);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
