@@ -509,25 +509,180 @@ fn full_name(first_name: String, last_name: String)-> (String, String, String) {
     (first_name, last_name, fullname)
 }
 
+#[allow(dead_code)]
+fn full_name_reference(first_name: &String, last_name: &String)-> String {
+    format!("{} {}", first_name, last_name) 
+}
+
 #[test]
 fn test_fullname() {
     let initial_first_name: String = String::from("Muhammad"); 
     let initial_last_name: String = String::from("Ridha"); 
 
-    let (a, b, fullname) = full_name(initial_first_name, initial_last_name); 
-    println!("{}", a);
-    println!("{}", b);
+    // using tuple to return back what passdown to the function parameter
+    let (initial_first_name, initial_last_name, fullname) = full_name(initial_first_name, initial_last_name); 
+    println!("{}", initial_first_name);
+    println!("{}", initial_last_name);
     println!("{}", fullname);
+
+
+    let initial_first_name_for_reference: String = String::from("Muhammad"); 
+    let initial_last_name_for_reference: String = String::from("Ridha"); 
+    // alternatif solutions would be using references to
+    let fullname_by_references = full_name_reference(&initial_first_name_for_reference, &initial_last_name_for_reference); 
+    println!("initial first name for reference: {}", initial_first_name_for_reference);
+    println!("initial last name for reference: {}", initial_last_name_for_reference);
+    println!("fullname for reference: {}", fullname_by_references);
+}
+
+#[allow(dead_code)]
+fn change_value(value: &mut String) {
+    value.push_str("Test")
+}
+
+#[test]
+fn test_change_value() {
+    let mut name: String = String::from("Ridha");
+
+    //creating mutable reference
+    let value_borrow = &mut name; 
+    // here cannot assign another mutable reference until value_borrow not use anymore/out of scope
+
+    change_value(value_borrow); 
+    change_value(value_borrow); 
+    change_value(value_borrow); 
+
+    println!("name: {}", name); 
+}
+
+#[allow(dead_code)]
+fn get_full_name(first_name: &String, last_name: &String)-> String {
+    let full_name = format!("{} {}", first_name, last_name); 
+    full_name
+}
+
+#[test]
+fn test_get_full_name() {
+    let firstname: String = String::from("Muhammad");
+    let lastname: String = String::from("Ridha");
+
+    let fullname: String = get_full_name(&firstname, &lastname); 
+
+    println!("firstname: {}", firstname);
+    println!("lastname: {}", lastname);
+    println!("fullname: {}", fullname);
+
+}
+
+#[test]
+#[allow(unused_variables)]
+fn slice_referece() {
+    let arr: [i32; 10] = [1,2,3,4,5,6,7,8,9,10];
+
+    let slice1: &[i32] = &arr[..]; // slice the whole array
+    println!("slice1: {:?}", slice1); // {:?} means that this implement Debug Trait
+
+    let slice2: &[i32] = &arr[0..5]; // exclusive from index 0, 1, 2, 3, 4
+    println!("slice2: {:?}", slice2);
+
+    let slice3: &[i32] = &arr[5..];
+    let slice4 = slice3; 
+    println!("slice3: {:?}", slice3);
+    
+    println!("arr: {:?}", arr); 
 }
 
 
+#[test]
+fn string_slice() {
+    let name: String = String::from("Muhammad Ridha"); 
+
+    // make a reference for the first name from name
+    let first_name: &str = &name[..8];
+    println!("first_name: {}", first_name);
 
 
+    // make a reference for the last_name from name
+    let last_name: &str = &name[9..];
+    println!("last_name: {}", last_name);
+}
+
+#[allow(dead_code)]
+struct Person {
+    first_name: String, 
+    last_name: String,
+    address: String,
+    age: u8
+}
+#[allow(dead_code)]
+fn print_struct_person(person: &Person) {
+    println!("person.first_name: {}", person.first_name);
+    println!("person.last_name: {}", person.last_name);
+    println!("person.address: {}", person.address);
+    println!("person.age: {}", person.age);
+}
 
 
+#[test]
+fn test_struct_person() {
+    let first_name: String = String::from("Muhammad");
+    let last_name: String = String::from("Ridha");
+    let person1: Person = Person {
+        //first_name: String::from("Muhammad"), 
+        //last_name: String::from("Ridha"),
+        first_name,  // init shorthand, first_name no longer available here, since it
+        // already move to person1.first_name
+        last_name, // init shorthand
+        address: String::from("Gajayana gg.6"),
+        age: 22
+    };
+    print_struct_person(&person1);
 
 
+    println!("============= below is person1_copy =============");
+    // here we gonna make a copy of person 1, but the problem is all field inside person1 that
+    // store inside heap is gonna move the ownership to the new owner
+    // let person1_copy: Person = Person {..person1}; // here person1.first_name is no longer
+    // available
+    // the solution is to use clone function
+    let person1_copy: Person = Person {
+        // here we handle all value that stored inside heap, and let the rest handle by itself
+        first_name: person1.first_name.clone(),
+        last_name: person1.last_name.clone(),
+        address: person1.address.clone(),
+        ..person1
+    };
 
+
+    print_struct_person(&person1_copy);
+    
+    println!("============= test is person1 field still available =============");
+    println!("person1.first_name: {}", person1.first_name);
+}
+
+// here we implement tuple struct
+#[allow(dead_code)]
+struct GeoPoint(f64, f64); 
+
+#[test]
+fn test_struct_tuple() {
+    // kita bisa mengakses isi dari tuple struct sama seperti mengakses tuple, yaitu menggunakan
+    // index
+    let random_geopoint: GeoPoint = GeoPoint(-1.6969, 69.1111);
+    
+    println!("latitude: {}", random_geopoint.0);
+    println!("longitude: {}", random_geopoint.1);
+}
+
+// kita bisa menginisiasi struct tanpa field/empty struct
+#[allow(dead_code)]
+struct Nothing;
+
+#[test]
+fn test_struct_nothing() {
+    let _nothing1: Nothing = Nothing;
+    let _nothing2: Nothing = Nothing{};
+}
 
 
 
