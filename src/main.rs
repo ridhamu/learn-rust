@@ -615,6 +615,13 @@ struct Person {
     age: u8
 }
 #[allow(dead_code)]
+impl Person {
+    fn say_hello(&self, name: &str) {
+       println!("Hello {}, my name is {}!", name, self.first_name); 
+    }
+}
+
+#[allow(dead_code)]
 fn print_struct_person(person: &Person) {
     println!("person.first_name: {}", person.first_name);
     println!("person.last_name: {}", person.last_name);
@@ -664,6 +671,14 @@ fn test_struct_person() {
 #[allow(dead_code)]
 struct GeoPoint(f64, f64); 
 
+#[allow(dead_code)]
+impl GeoPoint {
+    //creating associated function
+    fn new(coordinates: f64) -> GeoPoint {
+        GeoPoint (coordinates, coordinates)
+    }
+}
+
 #[test]
 fn test_struct_tuple() {
     // kita bisa mengakses isi dari tuple struct sama seperti mengakses tuple, yaitu menggunakan
@@ -672,6 +687,14 @@ fn test_struct_tuple() {
     
     println!("latitude: {}", random_geopoint.0);
     println!("longitude: {}", random_geopoint.1);
+}
+
+#[test]
+fn test_associated_function() {
+    let coordinates: GeoPoint = GeoPoint::new(69.69); 
+
+    println!("the longitude is: {}", coordinates.0);
+    println!("the latitude is: {}", coordinates.1);
 }
 
 // kita bisa menginisiasi struct tanpa field/empty struct
@@ -684,7 +707,21 @@ fn test_struct_nothing() {
     let _nothing2: Nothing = Nothing{};
 }
 
-
+#[test]
+fn test_person_method() {
+    let first_name: String = String::from("Muhammad");
+    let last_name: String = String::from("Ridha");
+    let person1: Person = Person {
+        //first_name: String::from("Muhammad"), 
+        //last_name: String::from("Ridha"),
+        first_name,  // init shorthand, first_name no longer available here, since it
+        // already move to person1.first_name
+        last_name, // init shorthand
+        address: String::from("Gajayana gg.6"),
+        age: 22
+    };
+    person1.say_hello("alejandro");
+}
 
 
 
