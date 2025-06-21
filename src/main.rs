@@ -723,7 +723,51 @@ fn test_person_method() {
     person1.say_hello("alejandro");
 }
 
+// enum
+#[allow(dead_code)]
+enum Level {
+    Regular, 
+    Premium,
+    Platinum
+}
 
+#[test]
+fn test_level() {
+    let _level1 = Level::Regular;
+    let _level2 = Level::Premium;
+    let _level1 = Level::Platinum;
+}
+
+
+//example payment kind with enum
+
+#[allow(dead_code)]
+enum Payment {
+    //card number
+    CreditCard(String),
+    //bank name, account number
+    BankTransfer(String, String),
+    //ewallet name, ewallet number
+    EWallet(String, String)
+}
+#[allow(dead_code)]
+impl Payment {
+    fn pay(&self, amount: u32) {
+        println!("paying {} amount!", amount);
+    }
+}
+
+#[test]
+fn test_payment() {
+    let _payment1: Payment = Payment::CreditCard(String::from("12345678"));
+    _payment1.pay(1000000);
+
+    let _payment2: Payment = Payment::BankTransfer(String::from("BCA"), String::from("12345678"));
+    _payment2.pay(2000000);
+
+    let _payment3: Payment = Payment::EWallet(String::from("GoPay"), String::from("12345678"));
+    _payment3.pay(3000000);
+}
 
 
 
